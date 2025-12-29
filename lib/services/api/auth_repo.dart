@@ -36,7 +36,6 @@ class AuthenticationRepository extends GetxController {
 
         return token;
       } else {
-        // API-provided error message
         final message = decoded['message'] ?? 'Login failed';
         throw Exception(message);
       }

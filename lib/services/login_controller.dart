@@ -75,8 +75,7 @@ class LoginController extends GetxController {
         );
         return;
       }
-
-      // ✅ Success
+      //on success
       emailController.clear();
       passwordController.clear();
 
