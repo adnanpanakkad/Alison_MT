@@ -1,228 +1,426 @@
-import 'dart:ui';
+import 'package:alisons_mt/screens/login_screen.dart';
+import 'package:alisons_mt/utils/constent/appcolors.dart';
 import 'package:flutter/material.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({Key? key}) : super(key: key);
 
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
-    return Scaffold(
-      backgroundColor: theme.colorScheme.background,
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar(
-            pinned: true,
-            expandedHeight: 260,
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-            flexibleSpace: FlexibleSpaceBar(
-              background: Stack(
-                fit: StackFit.expand,
-                children: [
-                  Container(
-                    decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: [Color(0xFF0F1828), Color(0xFF3A7BD5)],
-                      ),
-                    ),
-                  ),
-                  Positioned.fill(
-                    child: BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 0.5, sigmaY: 0.5),
-                      child: Container(color: Colors.black.withOpacity(0.05)),
-                    ),
-                  ),
-                  SafeArea(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
-                      child: Row(
-                        children: [
-                          _avatar(),
-                          const SizedBox(width: 16),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: const [
-                                Text('Welcome back,', style: TextStyle(color: Colors.white70, fontSize: 14)),
-                                SizedBox(height: 6),
-                                Text('Alison', style: TextStyle(color: Colors.white, fontSize: 26, fontWeight: FontWeight.w700)),
-                                SizedBox(height: 6),
-                                Text('Explore premium courses and track your progress', style: TextStyle(color: Colors.white70, fontSize: 13)),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(width: 8),
-                          _premiumBadge(),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: Colors.grey[50],
+        appBar: AppBar(
+          backgroundColor: Appcolors.buttonColor,
+          elevation: 0,
+          leading: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Image.network(
+              'https://via.placeholder.com/40',
+              fit: BoxFit.contain,
             ),
           ),
-
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _sectionTitle('Featured Categories', action: 'View all'),
-                  const SizedBox(height: 12),
-                  SizedBox(
-                    height: 140,
-                    child: ListView.separated(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: 5,
-                      separatorBuilder: (_, __) => const SizedBox(width: 12),
-                      itemBuilder: (context, index) => _glassCard(
-                        width: 260,
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Row(
-                            children: [
-                              CircleAvatar(radius: 28, backgroundColor: Colors.white24, child: Icon(Icons.school, color: Colors.white)),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: const [
-                                    Text('UX Design', style: TextStyle(color: Colors.white, fontWeight: FontWeight.w700)),
-                                    SizedBox(height: 6),
-                                    Text('12 courses', style: TextStyle(color: Colors.white70, fontSize: 12)),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-
-                  const SizedBox(height: 20),
-                  _sectionTitle('Recommended for you', action: 'See more'),
-                  const SizedBox(height: 12),
-                  Column(
-                    children: List.generate(4, (i) => Padding(
-                      padding: const EdgeInsets.only(bottom: 12.0),
-                      child: _courseTile(i),
-                    )),
-                  ),
-
-                  const SizedBox(height: 20),
-                  _ctaCard(),
-                  const SizedBox(height: 60),
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _avatar() => Container(
-        width: 64,
-        height: 64,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          gradient: const LinearGradient(colors: [Color(0xFF6DD5FA), Color(0xFF2980B9)]),
-          boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.25), blurRadius: 8, offset: const Offset(0, 4))],
-        ),
-        child: const Center(child: Icon(Icons.person, color: Colors.white, size: 32)),
-      );
-
-  Widget _premiumBadge() => Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-        decoration: BoxDecoration(borderRadius: BorderRadius.circular(20), color: Colors.white24),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: const [Icon(Icons.star, size: 16, color: Colors.amber), SizedBox(width: 6), Text('Premium', style: TextStyle(color: Colors.white))],
-        ),
-      );
-
-  Widget _sectionTitle(String title, {String? action}) => Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(title, style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w700)),
-          if (action != null)
-            Text(action, style: const TextStyle(color: Colors.blueAccent, fontWeight: FontWeight.w600)),
-        ],
-      );
-
-  Widget _glassCard({required Widget child, double width = double.infinity}) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(16),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 6, sigmaY: 6),
-        child: Container(
-          width: width,
-          decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.06),
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: Colors.white.withOpacity(0.08)),
-            boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.12), blurRadius: 12, offset: const Offset(0, 8))],
-          ),
-          child: child,
-        ),
-      ),
-    );
-  }
-
-  Widget _courseTile(int index) {
-    return _glassCard(
-      child: ListTile(
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        leading: CircleAvatar(backgroundColor: Colors.blueGrey[700], child: Icon(Icons.play_circle_fill, color: Colors.white)),
-        title: Text('Course Title ${index + 1}', style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w700)),
-        subtitle: const Text('Beginner • 3h 24m', style: TextStyle(color: Colors.white70)),
-        trailing: ElevatedButton(
-          style: ElevatedButton.styleFrom(backgroundColor: Colors.blueAccent, elevation: 0, shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10))),
-          onPressed: () {},
-          child: const Text('Start'),
-        ),
-      ),
-    );
-  }
-
-  Widget _ctaCard() {
-    return _glassCard(
-      child: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Row(
-          children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  Text('Upgrade to Premium', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.w800)),
-                  SizedBox(height: 6),
-                  Text('Get unlimited access to all courses and certificates', style: TextStyle(color: Colors.white70)),
-                ],
-              ),
-            ),
-            const SizedBox(width: 12),
-            ElevatedButton(
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.search, color: Colors.white),
               onPressed: () {},
-              style: ElevatedButton.styleFrom(padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 14), backgroundColor: Colors.amber[700]),
-              child: const Text('Get Premium', style: TextStyle(color: Colors.black, fontWeight: FontWeight.w700)),
+            ),
+            IconButton(
+              icon: const Icon(Icons.favorite_border, color: Colors.white),
+              onPressed: () {},
+            ),
+            IconButton(
+              icon: const Icon(
+                Icons.shopping_cart_outlined,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginScreen()),
+                );
+              },
             ),
           ],
         ),
+        body: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Promotional Banner
+              Container(
+                margin: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  gradient: const LinearGradient(
+                    colors: [Color(0xFFFFB74D), Color(0xFFFFCC80)],
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.orange.withOpacity(0.3),
+                      blurRadius: 8,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Hurry Up! Get 10% Off',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 12,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            const SizedBox(height: 8),
+                            const Text(
+                              'Go Natural with\nUnpolished Grains',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                height: 1.2,
+                              ),
+                            ),
+                            const SizedBox(height: 12),
+                            ElevatedButton(
+                              onPressed: () {},
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.white,
+                                foregroundColor: Colors.orange,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 20,
+                                  vertical: 8,
+                                ),
+                              ),
+                              child: const Text(
+                                'Shop Now',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Image.network(
+                        'https://via.placeholder.com/120x120',
+                        width: 120,
+                        height: 120,
+                        fit: BoxFit.contain,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              // Categories Section
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Categories',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87,
+                      ),
+                    ),
+                    TextButton(
+                      onPressed: () {},
+                      child: const Text(
+                        'See all',
+                        style: TextStyle(
+                          color: Colors.orange,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              // Categories Horizontal List
+              SizedBox(
+                height: 120,
+                child: ListView(
+                  scrollDirection: Axis.horizontal,
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  children: [
+                    _buildCategoryItem('Unpolished\nPulses', '30% Offer'),
+                    _buildCategoryItem('Unpolished\nRice', '20% Offer'),
+                    _buildCategoryItem('Unpolished\nMillet', '15% Offer'),
+                    _buildCategoryItem('Nuts & Dry\nFruits', '25% Offer'),
+                    _buildCategoryItem('Unpolished\nFlour', '10% Offer'),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 20),
+
+              // Featured Products Section
+              _buildSectionHeader('Featured Products'),
+              _buildProductGrid([
+                ProductModel(
+                  name: 'Spices & Masala',
+                  subtitle: 'Light pink oart 1 kg',
+                  price: '₹ 80.00',
+                  originalPrice: '₹ 100.00',
+                  image: 'https://via.placeholder.com/150',
+                ),
+                ProductModel(
+                  name: 'Frozen & Edgers',
+                  subtitle: 'Idlyrava 1 kg',
+                  price: '₹ 60.00',
+                  originalPrice: '₹ 80.00',
+                  image: 'https://via.placeholder.com/150',
+                ),
+              ]),
+
+              const SizedBox(height: 20),
+
+              // Daily Best Selling Section
+              _buildSectionHeader('Daily Best Selling'),
+              _buildProductGrid([
+                ProductModel(
+                  name: 'Unpolished Pulses',
+                  subtitle: 'Mashoor Black 1kg',
+                  price: '₹ 80.00',
+                  originalPrice: '₹ 100.00',
+                  image: 'https://via.placeholder.com/150',
+                ),
+                ProductModel(
+                  name: 'Unpolished Millet',
+                  subtitle: 'Little Millet 1KG',
+                  price: '₹ 195.00',
+                  originalPrice: '₹ 250.00',
+                  image: 'https://via.placeholder.com/150',
+                ),
+              ]),
+
+              const SizedBox(height: 20),
+            ],
+          ),
+        ),
       ),
     );
   }
+
+  Widget _buildCategoryItem(String title, String offer) {
+    return Container(
+      width: 90,
+      margin: const EdgeInsets.symmetric(horizontal: 4),
+      child: Column(
+        children: [
+          Container(
+            width: 70,
+            height: 70,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.brown[100],
+              image: const DecorationImage(
+                image: NetworkImage('https://via.placeholder.com/70'),
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text(
+            title,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontSize: 11,
+              fontWeight: FontWeight.w600,
+              color: Colors.black87,
+              height: 1.2,
+            ),
+          ),
+          Text(offer, style: TextStyle(fontSize: 10, color: Colors.grey[600])),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSectionHeader(String title) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            title,
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Colors.black87,
+            ),
+          ),
+          TextButton(
+            onPressed: () {},
+            child: const Text(
+              'See all',
+              style: TextStyle(
+                color: Colors.orange,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildProductGrid(List<ProductModel> products) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Row(
+        children: products
+            .map((product) => Expanded(child: _buildProductCard(product)))
+            .toList(),
+      ),
+    );
+  }
+
+  Widget _buildProductCard(ProductModel product) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 4),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.grey[300]!),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Stack(
+            children: [
+              ClipRRect(
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(12),
+                ),
+                child: Image.network(
+                  product.image,
+                  height: 120,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              Positioned(
+                top: 8,
+                right: 8,
+                child: Container(
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
+                  ),
+                  child: IconButton(
+                    icon: const Icon(
+                      Icons.favorite_border,
+                      size: 20,
+                      color: Colors.grey,
+                    ),
+                    onPressed: () {},
+                    padding: EdgeInsets.zero,
+                    constraints: const BoxConstraints(),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.all(12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  product.name,
+                  style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  product.subtitle,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black87,
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 8),
+                Row(
+                  children: [
+                    Text(
+                      product.price,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.orange,
+                      ),
+                    ),
+                    const SizedBox(width: 6),
+                    Text(
+                      product.originalPrice,
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.grey[500],
+                        decoration: TextDecoration.lineThrough,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                SizedBox(
+                  width: double.infinity,
+                  child: OutlinedButton.icon(
+                    onPressed: () {},
+                    icon: const Icon(Icons.shopping_cart_outlined, size: 16),
+                    label: const Text('Add', style: TextStyle(fontSize: 12)),
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: Colors.orange,
+                      side: const BorderSide(color: Colors.orange),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class ProductModel {
+  final String name;
+  final String subtitle;
+  final String price;
+  final String originalPrice;
+  final String image;
+
+  ProductModel({
+    required this.name,
+    required this.subtitle,
+    required this.price,
+    required this.originalPrice,
+    required this.image,
+  });
 }
