@@ -4,15 +4,14 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 class AuthenticationRepository extends GetxController {
-  static const String _baseUrl = 'https://your-api-domain.com/api';
+  static const String _baseUrl = 'https://sungod.demospro2023.in.net/api';
 
-  /// LOGIN WITH API (EMAIL + PASSWORD)
   Future<String> login({
     required String email,
     required String password,
   }) async {
     try {
-      final uri = Uri.parse('$_baseUrl/auth/login');
+      final uri = Uri.parse('$_baseUrl/login');
 
       final response = await http.post(
         uri,
