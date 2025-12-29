@@ -1,16 +1,8 @@
 # alisons_mt
 
-A new Flutter project.
+flutter version user as : sdk: ^3.9.2
+Steps to run = debug the app with Android devices with the emulator
+state managment =Getx
+Note: some issues are there related to getx, and I couldn't complete the task as expected. In this timeline, I do my best to get better and accomplish the task on time
+      mainly focusing on better ui with cleaner code 
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
